@@ -1,0 +1,12 @@
+# Foundry
+cache/
+out/
+broadcast/
+
+# Entorno
+.env
+.env.local
+
+# Editor / SO
+.vscode/
+.DS_Store

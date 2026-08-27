@@ -1,0 +1,20 @@
+[profile.default]
+src = "src"
+out = "out"
+libs = ["lib"]
+test = "test"
+solc_version = "0.8.24"
+optimizer = true
+optimizer_runs = 200
+via_ir = false
+
+# Perfil reservado para el laboratorio de Aritmética insegura (LegacyToken),
+# que fija deliberadamente un compilador anterior a 0.8.0 con fines pedagógicos.
+# Uso previsto: forge build --profile legacy
+[profile.legacy]
+src = "src/unsafe-arithmetic/legacy"
+solc_version = "0.7.6"
+
+[fmt]
+line_length = 100
+tab_width = 4
