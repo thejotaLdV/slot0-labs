@@ -2,9 +2,9 @@
 pragma solidity ^0.8.19;
 
 import {Test} from "forge-std/Test.sol";
-import {LiquidityPool} from "../../src/reentrancy/LiquidityPool.sol";
-import {LiquidityPoolFixed} from "../../src/reentrancy/LiquidityPoolFixed.sol";
-import {LoanManager} from "../../src/reentrancy/LoanManager.sol";
+import {LiquidityPool} from "../../src/reentrancy/target/LiquidityPool.sol";
+import {LiquidityPoolFixed} from "../../src/reentrancy/mitigations/LiquidityPoolFixed.sol";
+import {LoanManager} from "../../src/reentrancy/target/LoanManager.sol";
 import {ReadOnlyReentrancyAttacker} from "../../src/reentrancy/attacks/ReadOnlyReentrancyAttacker.sol";
 
 contract Reentrancy03Test is Test {

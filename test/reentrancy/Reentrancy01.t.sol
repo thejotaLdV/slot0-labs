@@ -2,8 +2,8 @@
 pragma solidity ^0.8.19;
 
 import {Test} from "forge-std/Test.sol";
-import {SimpleVault} from "../../src/reentrancy/SimpleVault.sol";
-import {SimpleVaultFixed} from "../../src/reentrancy/SimpleVaultFixed.sol";
+import {SimpleVault} from "../../src/reentrancy/target/SimpleVault.sol";
+import {SimpleVaultFixed} from "../../src/reentrancy/mitigations/SimpleVaultFixed.sol";
 import {SimpleVaultAttacker} from "../../src/reentrancy/attacks/SimpleVaultAttacker.sol";
 
 contract Reentrancy01Test is Test {

@@ -2,8 +2,8 @@
 pragma solidity ^0.8.19;
 
 import {Test} from "forge-std/Test.sol";
-import {InternalLedgerVault} from "../../src/reentrancy/InternalLedgerVault.sol";
-import {InternalLedgerVaultFixed} from "../../src/reentrancy/InternalLedgerVaultFixed.sol";
+import {InternalLedgerVault} from "../../src/reentrancy/target/InternalLedgerVault.sol";
+import {InternalLedgerVaultFixed} from "../../src/reentrancy/mitigations/InternalLedgerVaultFixed.sol";
 import {CrossFunctionAttacker} from "../../src/reentrancy/attacks/CrossFunctionAttacker.sol";
 
 contract Reentrancy02Test is Test {

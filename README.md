@@ -17,16 +17,27 @@ Proyectos Foundry reales y ejecutables que respaldan cada laboratorio de [slot0]
 | Aleatoriedad débil | ⏳ pendiente |
 | Aritmética insegura | ⏳ pendiente |
 
-## Estructura reto / solución
+## Estructura de cada categoría
 
-Los contratos en `src/<categoria>/attacks/` son el **reto**: la parte del exploit que realmente ejerce la vulnerabilidad (normalmente el callback `receive()`) está vacía, con pistas en comentarios. La configuración inicial (depositar, convertirte en LP, etc.) ya viene resuelta, porque no es ahí donde está el aprendizaje.
+```
+src/<categoria>/
+├── target/        dados, no se editan (los contratos vulnerables tal cual)
+├── attacks/       RETO: contrato atacante con el exploit incompleto
+└── mitigations/   RETO: copia del contrato vulnerable, mitigación incompleta
 
-La versión completa y ya verificada de cada atacante vive en `solutions/<categoria>/`, en un commit separado de lo que se espera que edite el usuario. Ver [`solutions/README.md`](solutions/README.md) para el criterio de cuándo consultarla.
+solutions/<categoria>/
+├── attacks/       versión completa y verificada de cada atacante
+└── mitigations/   versión completa y verificada de cada mitigación
+```
+
+`src/attacks/` y `src/mitigations/` son los dos ficheros que hay que completar por laboratorio — normalmente el callback `receive()` en el atacante, y el orden de las líneas + `nonReentrant` en la mitigación. `src/target/` no se toca: es el contrato vulnerable de partida, idéntico al mostrado en la web.
+
+`solutions/` reproduce la misma estructura (`attacks/` y `mitigations/`) con las versiones completas — ver [`solutions/README.md`](solutions/README.md) para el criterio de cuándo consultarla.
 
 ## Instalación
 
 ```bash
-git clone <url-de-este-repo> slot0-labs
+git clone https://github.com/thejotaLdV/slot0-labs.git
 cd slot0-labs
 forge install foundry-rs/forge-std --no-commit
 forge install OpenZeppelin/openzeppelin-contracts --no-commit
@@ -36,14 +47,12 @@ forge build
 ## Ejecutar los tests de una categoría
 
 ```bash
-forge test --match-path "test/reentrancy/*.sol" -vvvv
+forge test --match-path "test/reentrancy/*.sol" -vv
 ```
 
 Cada fichero de test contiene, como mínimo, dos funciones por laboratorio:
 
-- `test_exploit_...` — despliega el contrato **vulnerable** y demuestra que el ataque descrito en la web funciona.
-- `test_mitigation_...` — despliega el contrato **corregido** y demuestra que el mismo ataque ya no funciona (revierte, o solo permite la operación legítima).
+- `test_exploit_...` — pasa cuando `src/attacks/` está bien completado.
+- `test_mitigation_...` — pasa cuando, además, `src/mitigations/` también lo está.
 
-## Nota sobre verificación
-
-Este código se ha escrito con trazado manual cuidadoso de cada operación aritmética y cada secuencia de llamadas, pero **no se ha compilado ni ejecutado** en el entorno donde se redactó (sin acceso a red para instalar Foundry/OpenZeppelin). Antes de darlo por bueno, ejecuta `forge build` y `forge test -vvvv` y reporta cualquier error de compilación o test en rojo.
+Es normal ver un test en verde y el otro en rojo mientras solo has completado uno de los dos ficheros.
