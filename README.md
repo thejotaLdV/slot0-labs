@@ -17,6 +17,12 @@ Proyectos Foundry reales y ejecutables que respaldan cada laboratorio de [slot0]
 | Aleatoriedad débil | ⏳ pendiente |
 | Aritmética insegura | ⏳ pendiente |
 
+## Estructura reto / solución
+
+Los contratos en `src/<categoria>/attacks/` son el **reto**: la parte del exploit que realmente ejerce la vulnerabilidad (normalmente el callback `receive()`) está vacía, con pistas en comentarios. La configuración inicial (depositar, convertirte en LP, etc.) ya viene resuelta, porque no es ahí donde está el aprendizaje.
+
+La versión completa y ya verificada de cada atacante vive en `solutions/<categoria>/`, en un commit separado de lo que se espera que edite el usuario. Ver [`solutions/README.md`](solutions/README.md) para el criterio de cuándo consultarla.
+
 ## Instalación
 
 ```bash

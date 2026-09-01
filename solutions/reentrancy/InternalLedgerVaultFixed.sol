@@ -3,8 +3,8 @@ pragma solidity ^0.8.19;
 
 import {ReentrancyGuard} from "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-/// @notice TODO: copia exacta de la versión vulnerable (InternalLedgerVault.sol).
-///         Aplica la mitigación tú mismo.
+/// @notice Versión corregida: CEI en withdraw() + nonReentrant en TODAS las
+///         funciones que tocan `balances`, no solo en la que hace la llamada externa.
 contract InternalLedgerVaultFixed is ReentrancyGuard {
     mapping(address => uint256) public balances;
 
@@ -12,21 +12,17 @@ contract InternalLedgerVaultFixed is ReentrancyGuard {
         balances[msg.sender] += msg.value;
     }
 
-    // TODO: mismo bug que la versión vulnerable -- aplica CEI y nonReentrant.
-    function withdraw() external {
+    function withdraw() external nonReentrant {
         uint256 amount = balances[msg.sender];
         require(amount > 0, "Nothing to withdraw");
 
+        balances[msg.sender] = 0; // effect antes de la interaccion
+
         (bool success, ) = msg.sender.call{value: amount}("");
         require(success, "Transfer failed");
-
-        balances[msg.sender] = 0;
     }
 
-    // TODO: esta función no hace ninguna llamada externa por sí misma,
-    // pero comparte `balances` con withdraw() -- piensa si protegerla
-    // solo a ella con nonReentrant, sin arreglar withdraw(), bastaría.
-    function transferInternal(address to, uint256 amount) external {
+    function transferInternal(address to, uint256 amount) external nonReentrant {
         require(balances[msg.sender] >= amount, "Insufficient balance");
         balances[msg.sender] -= amount;
         balances[to] += amount;

