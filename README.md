@@ -8,7 +8,7 @@ Proyectos Foundry reales y ejecutables que respaldan cada laboratorio de [slot0]
 |---|---|
 | Reentrancy | ✅ 3/3 laboratorios (contratos, exploits, tests de mitigación) |
 | Control de acceso | ✅ 4/4 laboratorios (contratos, exploits, tests de mitigación) |
-| Manipulación de oráculos | ⏳ pendiente |
+| Manipulación de oráculos | ✅ 3/3 laboratorios (contratos, exploits, tests de mitigación) |
 | Flash Loan Attacks | ⏳ pendiente |
 | Delegatecall & Storage Collisions | ⏳ pendiente |
 | Gobernanza y economía DeFi | ⏳ pendiente |
