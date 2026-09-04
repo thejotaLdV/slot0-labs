@@ -48,8 +48,10 @@ contract OracleManipulation01Test is Test {
     ///      Con 5.000 TOKEN de colateral, maxBorrow pasa de 0.35 ETH (real) a
     ///      1.4 ETH (manipulado) -- pedir 1 ETH prestado cabe manipulado pero
     ///      NO al precio real. Deshacer el swap devuelve exactamente los 100
-    ///      ETH (AMM sin comisión, ida y vuelta sin perdidas): beneficio neto
-    ///      exacto = 1 ETH, el importe prestado.
+    ///      ETH (AMM sin comisión, ida y vuelta sin perdidas). attackerOwner
+    ///      gasta sus 100 ETH iniciales como msg.value y recibe de vuelta
+    ///      101 ETH (100 recuperados + 1 prestado): balance final = 101 ETH,
+    ///      no 100 -- ese ETH de más es el beneficio real de la manipulación.
     function test_exploit_spotPriceManipulation() public {
         vm.startPrank(attackerOwner);
         OracleManipulationAttacker attacker =
@@ -67,7 +69,7 @@ contract OracleManipulation01Test is Test {
         vm.prank(attackerOwner);
         attacker.attack{value: 100 ether}(1 ether);
 
-        assertEq(attackerOwner.balance, 1 ether, "beneficio neto exacto: el ETH prestado");
+        assertEq(attackerOwner.balance, 101 ether, "balance final: 0 tras gastar 100 ETH, +101 ETH recibidos (1 prestado + 100 recuperados)");
         assertEq(amm.reserveETH(), 100 ether, "el AMM vuelve exactamente a su estado inicial");
         assertEq(amm.reserveToken(), 1_000_000 ether);
     }

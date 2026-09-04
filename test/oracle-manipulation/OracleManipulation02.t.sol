@@ -41,8 +41,10 @@ contract OracleManipulation02Test is Test {
     /// @dev Traza exacta: 80 ETH + update() diluyen el precio real a la mitad;
     ///      20 ETH mas + update() lo expulsan del todo (ambas lecturas ya
     ///      manipuladas). maxBorrow con 5.000 TOKEN pasa a ~1.267 ETH -- pedir
-    ///      1 ETH cabe. Deshacer ambos swaps devuelve los 100 ETH (menos 1
-    ///      wei de redondeo): beneficio neto = 1 ETH, el importe prestado.
+    ///      1 ETH cabe. Deshacer ambos swaps devuelve 100 ETH menos 1 wei de
+    ///      redondeo. attackerOwner gasta sus 100 ETH iniciales como msg.value
+    ///      y recibe de vuelta (100 ETH - 1 wei) + 1 ETH prestado: balance
+    ///      final = 101 ETH - 1 wei -- ese ETH de más es el beneficio real.
     function test_exploit_twapManipulation() public {
         vm.startPrank(attackerOwner);
         TWAPManipulationAttacker attacker = new TWAPManipulationAttacker(
@@ -60,7 +62,7 @@ contract OracleManipulation02Test is Test {
         vm.prank(attackerOwner);
         attacker.attack{value: 100 ether}(1 ether);
 
-        assertEq(attackerOwner.balance, 1 ether, "beneficio neto exacto: el ETH prestado");
+        assertEq(attackerOwner.balance, 100999999999999999999, "balance final: 0 tras gastar 100 ETH, +101 ETH menos 1 wei de redondeo (dos swaps)");
     }
 
     /// @dev Mismo ataque contra TWAPOracleFixed: la segunda llamada a
