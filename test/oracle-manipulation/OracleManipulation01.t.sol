@@ -75,9 +75,12 @@ contract OracleManipulation01Test is Test {
     }
 
     /// @dev Mismo intento (100 ETH de swap, pedir 1 ETH) pero el precio de
-    ///      LendingPoolFixed no depende del AMM -- sigue siendo 1e14. Con
-    ///      5.000 TOKEN de colateral, maxBorrow real es 0.35 ETH: pedir 1
-    ///      ETH prestado excede el LTV y revierte.
+    ///      LendingPoolFixed no depende del AMM -- sigue siendo 1e14. Antes
+    ///      del ataque, un préstamo legítimo y pequeño (0.1 ETH, muy por
+    ///      debajo del límite real de 0.35 ETH) debe funcionar -- si esto
+    ///      falla, el oráculo externo todavía no está leyéndose de verdad.
+    ///      Con 5.000 TOKEN de colateral, maxBorrow real es 0.35 ETH: pedir
+    ///      1 ETH prestado en el ataque excede el LTV y revierte.
     function test_mitigation_blocksSpotPriceManipulation() public {
         vm.startPrank(attackerOwner);
         OracleManipulationAttacker attacker =
@@ -88,6 +91,10 @@ contract OracleManipulation01Test is Test {
         vm.startPrank(address(attacker));
         token.approve(address(lendingPoolFixed), 5000 ether);
         lendingPoolFixed.depositCollateral(5000 ether);
+
+        // comprobacion de cordura: un prestamo legitimo, bien dentro del
+        // limite real (0.35 ETH), debe funcionar sin revertir
+        lendingPoolFixed.borrow(0.1 ether);
         vm.stopPrank();
 
         vm.deal(attackerOwner, 100 ether);
