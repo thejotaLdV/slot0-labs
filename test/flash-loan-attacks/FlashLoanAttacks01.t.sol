@@ -28,7 +28,8 @@ contract FlashLoanAttacks01Test is Test {
         stakeToken.mint(address(lender), 90_000 ether);
 
         // un staker legitimo, ya con 100.000 TOKEN en juego desde antes
-        stakeToken.mint(legitStaker, 100_000 ether);
+        // (en cada version -- 200.000 en total)
+        stakeToken.mint(legitStaker, 200_000 ether);
         vm.startPrank(legitStaker);
         stakeToken.approve(address(staking), 100_000 ether);
         staking.stake(100_000 ether);
