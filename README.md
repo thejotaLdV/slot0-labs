@@ -11,7 +11,7 @@ Proyectos Foundry reales y ejecutables que respaldan cada laboratorio de [slot0]
 | Manipulación de oráculos | ✅ 3/3 laboratorios (contratos, exploits, tests de mitigación) |
 | Flash Loan Attacks | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
 | Delegatecall & Storage Collisions | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
-| Gobernanza y economía DeFi | ⏳ pendiente |
+| Gobernanza y economía DeFi | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
 | Front-running & MEV | ⏳ pendiente |
 | Firma y replay | ⏳ pendiente |
 | Aleatoriedad débil | ⏳ pendiente |
