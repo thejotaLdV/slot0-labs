@@ -7,7 +7,7 @@ pragma solidity ^0.8.19;
 ///         de storage entre versiones de la lógica.
 contract VaultProxy {
     bytes32 private constant IMPLEMENTATION_SLOT =
-        0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bb;
+        0x360894a13ba1a3210667c828492db98dca3e2076cc3735a920a3ca505d382bbc;
 
     constructor(address _implementation) {
         bytes32 slot = IMPLEMENTATION_SLOT;
