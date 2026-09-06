@@ -12,7 +12,7 @@ Proyectos Foundry reales y ejecutables que respaldan cada laboratorio de [slot0]
 | Flash Loan Attacks | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
 | Delegatecall & Storage Collisions | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
 | Gobernanza y economía DeFi | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
-| Front-running & MEV | ⏳ pendiente |
+| Front-running & MEV | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
 | Firma y replay | ⏳ pendiente |
 | Aleatoriedad débil | ⏳ pendiente |
 | Aritmética insegura | ⏳ pendiente |
