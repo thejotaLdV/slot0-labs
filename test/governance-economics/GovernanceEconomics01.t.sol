@@ -62,7 +62,7 @@ contract GovernanceEconomics01Test is Test {
         vm.prank(voterC);
         governor.vote(id);
 
-        (, uint256 votesFor,) = governor.proposals(id);
+        (, , uint256 votesFor, ) = governor.proposals(id);
         assertEq(votesFor, 300_000e18, "quorum alcanzado con un tercio del poder real");
 
         governor.execute(id);
@@ -90,7 +90,7 @@ contract GovernanceEconomics01Test is Test {
         vm.prank(voterC);
         governorFixed.vote(id);
 
-        (, uint256 votesFor,) = governorFixed.proposals(id);
+        (, , uint256 votesFor, ) = governorFixed.proposals(id);
         assertEq(votesFor, 100_000e18, "solo voterC aporta poder real, sin doble conteo");
 
         vm.expectRevert(bytes("Quorum not reached"));
