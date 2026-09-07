@@ -14,7 +14,7 @@ Proyectos Foundry reales y ejecutables que respaldan cada laboratorio de [slot0]
 | Gobernanza y economía DeFi | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
 | Front-running & MEV | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
 | Firma y replay | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
-| Aleatoriedad débil | ⏳ pendiente |
+| Aleatoriedad débil | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
 | Aritmética insegura | ⏳ pendiente |
 
 ## Estructura de cada categoría
