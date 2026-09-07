@@ -43,6 +43,7 @@ contract FrontRunningMev02Test is Test {
     ///      47.619... TOKEN -> 5,970654... ETH: beneficio neto ~0,9707 ETH
     ///      sobre 5 ETH puestos (~19%), sin quedarse con ninguna posicion en TOKEN.
     function test_exploit_sandwich() public {
+        vm.deal(attacker, 5 ether);
         uint256 balanceBefore = attacker.balance;
 
         vm.prank(attacker);
@@ -74,6 +75,7 @@ contract FrontRunningMev02Test is Test {
         uint256 fairOut = (reserveTokenBefore * ethIn) / (reserveETHBefore + ethIn);
         assertEq(fairOut, 90909090909090909090909);
 
+        vm.deal(attacker, 5 ether);
         vm.prank(attacker);
         sandwich.frontRun{value: 5 ether}();
 
