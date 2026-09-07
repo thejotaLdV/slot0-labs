@@ -68,7 +68,10 @@ contract FrontRunningMev02Test is Test {
     ///      (~89.999,99): el swap de victim revierte en vez de ejecutarse a
     ///      un precio mucho peor.
     function test_mitigation_blocksSandwich() public {
-        uint256 fairOut = (1_000_000 ether * 10 ether) / (100 ether + 10 ether);
+        uint256 reserveTokenBefore = 1_000_000 ether;
+        uint256 reserveETHBefore = 100 ether;
+        uint256 ethIn = 10 ether;
+        uint256 fairOut = (reserveTokenBefore * ethIn) / (reserveETHBefore + ethIn);
         assertEq(fairOut, 90909090909090909090909);
 
         vm.prank(attacker);
