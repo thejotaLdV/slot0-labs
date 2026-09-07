@@ -31,7 +31,7 @@ contract WeakRandomness01Test is Test {
         CoinFlipAttacker attacker = new CoinFlipAttacker(address(coinFlip));
         vm.stopPrank();
 
-        vm.deal(address(attacker), 10 ether);
+        vm.deal(address(this), 10 ether);
 
         for (uint256 i = 0; i < 10; i++) {
             attacker.attack{value: 1 ether}();
@@ -43,7 +43,10 @@ contract WeakRandomness01Test is Test {
         attacker.collect();
 
         assertEq(coinFlip.wins(address(attacker)), 10, "10 de 10 -- no es azar");
-        assertEq(attackerOwner.balance, 10 ether, "beneficio neto: 10 apuestas ganadas de 1 ether cada una");
+        // balance final: 10 rondas x 2 ether ganados cada una = 20 ETH.
+        // El "beneficio neto" (10 ETH) es esto menos los 10 ETH que puso el
+        // contrato de test como capital -- no es lo mismo que el balance final.
+        assertEq(attackerOwner.balance, 20 ether, "balance final tras 10 rondas ganadas");
     }
 
     /// @dev Mismo intento contra CoinFlipFixed: play() ya no resuelve nada,
