@@ -18,6 +18,7 @@ contract WeakRandomness01Test is Test {
         coinFlip.fund{value: 20 ether}();
 
         coinFlipFixed = new CoinFlipFixed();
+        vm.deal(address(this), 20 ether);
         coinFlipFixed.fund{value: 20 ether}();
     }
 

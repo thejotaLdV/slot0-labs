@@ -17,6 +17,7 @@ contract WeakRandomness02Test is Test {
         coinFlip.fund{value: 2 ether}();
 
         coinFlipFixed = new DelayedCoinFlipFixed();
+        vm.deal(address(this), 2 ether);
         coinFlipFixed.fund{value: 2 ether}();
     }
 
