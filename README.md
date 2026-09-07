@@ -13,7 +13,7 @@ Proyectos Foundry reales y ejecutables que respaldan cada laboratorio de [slot0]
 | Delegatecall & Storage Collisions | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
 | Gobernanza y economía DeFi | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
 | Front-running & MEV | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
-| Firma y replay | ⏳ pendiente |
+| Firma y replay | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
 | Aleatoriedad débil | ⏳ pendiente |
 | Aritmética insegura | ⏳ pendiente |
 
