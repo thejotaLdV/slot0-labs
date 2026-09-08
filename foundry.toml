@@ -10,9 +10,15 @@ via_ir = false
 
 # Perfil reservado para el laboratorio de Aritmética insegura (LegacyToken),
 # que fija deliberadamente un compilador anterior a 0.8.0 con fines pedagógicos.
-# Uso previsto: forge build --profile legacy
+# Vive en legacy/ (fuera de src/) para que el perfil por defecto (solc 0.8.24)
+# nunca intente compilarlo -- si estuviera dentro de src/, forge lo escanearía
+# igual y la compilación por defecto fallaría para TODAS las categorías.
+#
+# Uso: forge build --profile legacy   (una vez, antes de correr los tests de
+# esta categoría) genera el artefacto compilado en out/, que el test carga
+# con vm.getCode() sin volver a compilar el .sol directamente.
 [profile.legacy]
-src = "src/unsafe-arithmetic/legacy"
+src = "legacy"
 solc_version = "0.7.6"
 
 [fmt]

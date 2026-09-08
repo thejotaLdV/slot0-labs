@@ -15,7 +15,7 @@ Proyectos Foundry reales y ejecutables que respaldan cada laboratorio de [slot0]
 | Front-running & MEV | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
 | Firma y replay | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
 | Aleatoriedad débil | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
-| Aritmética insegura | ⏳ pendiente |
+| Aritmética insegura | ✅ 2/2 laboratorios (contratos, exploits, tests de mitigación) |
 
 ## Estructura de cada categoría
 
@@ -56,3 +56,17 @@ Cada fichero de test contiene, como mínimo, dos funciones por laboratorio:
 - `test_mitigation_...` — pasa cuando, además, `src/mitigations/` también lo está.
 
 Es normal ver un test en verde y el otro en rojo mientras solo has completado uno de los dos ficheros.
+
+## Caso especial: Aritmética insegura (Lab 01)
+
+El Lab 01 de esta categoría fija a propósito un pragma anterior a Solidity 0.8.0 (`legacy/unsafe-arithmetic/LegacyToken.sol`), para que la aritmética con overflow real sea posible. Ese fichero vive **fuera** de `src/` — si estuviera dentro, el perfil por defecto (solc 0.8.24) fallaría al compilarlo, y con él, la compilación de **todo** el repositorio.
+
+Antes de correr los tests de esta categoría por primera vez (o después de cualquier `forge clean`):
+
+```bash
+forge build --profile legacy
+```
+
+Esto compila solo `legacy/`, con solc 0.7.6, y deja el artefacto en `out/`. El test carga ese bytecode ya compilado con `vm.getCode()`, sin volver a compilar el `.sol` directamente — así que este paso no hace falta repetirlo en cada `forge test`, solo la primera vez.
+
+`LegacyTokenFixed.sol` (la mitigación de este lab) no es un stub — no hay ningún TODO que completar. La propia mitigación es cambiar de compilador: la misma lógica, recompilada con pragma `^0.8.19`, ya revierte automáticamente en overflow. El Lab 02 de esta categoría sí tiene un reto real de código (retirar un bloque `unchecked` mal usado).
