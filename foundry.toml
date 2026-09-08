@@ -19,6 +19,7 @@ via_ir = false
 # con vm.getCode() sin volver a compilar el .sol directamente.
 [profile.legacy]
 src = "legacy"
+test = "legacy"
 solc_version = "0.7.6"
 
 [fmt]
